@@ -4,7 +4,22 @@
 
 #===========================================================================================================
 
+import json
 
+subjects = [
+    "Hindi",
+    "English",
+    "Maths",
+    "Science",
+    "Social Studies",
+    "Physical Education"
+]
+
+def save_students():
+    with open("student.json", "w") as file:
+        json.dump(students, file, indent=4)
+
+    print("\nStudent data saved successfully...👍")
 
 def get_valid_number(prompt, minimum, maximum):
     while True:
@@ -20,16 +35,22 @@ def get_valid_number(prompt, minimum, maximum):
                 )
 
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print("Invalid input. Please enter a valid number...❌")
 
 
 def add_students():
     name = input('Enter the Student name: ')
     age = get_valid_number('Enter the age of the Student: ', 5, 100)
-    marks = get_valid_number('Enter the marks of the Student: ', 0, 100)
+    marks = {}
+
+    for subject in subjects:
+        marks[subject] = get_valid_number(f'Enter the marks of {subject}: ', 0, 100)
+
     course = input('Enter the course of the student: ')
     contact = input('Enter the contact no. of student: ')
     email_id = input('Enter the Email ID of student: ')
+    total_marks = sum(marks.values())
+    percentage = (total_marks / (len(subjects) * 100)) * 100
 
     student = {
         'name': name,
@@ -43,16 +64,22 @@ def add_students():
     return student
 
 def grade_calculate(marks):
+
     if marks >= 90:
         return 'A+'
+
     elif marks >= 80:
         return 'A'
-    elif marks >= 70:
+
+    elif marks  >= 70:
         return 'B'
+
     elif marks >= 60:
         return 'C'
+
     elif marks >= 50:
         return 'D'
+
     else:
         return 'F'
 
@@ -65,11 +92,11 @@ def search_student():
 
     for student in students:
         if student["name"].lower() == search_name.lower():
-            print("\nStudent Found...")
+            print("\nStudent Found...☑️")
             display_student(student)            
             return
 
-    print("\nStudent not found...")
+    print("\nStudent not found...❌")
 
 
 
@@ -79,7 +106,7 @@ def update_student():
 
     for student in students:
         if student['name'].lower() == student_name.lower():
-            print("\nStudent found. Enter new details: ")
+            print("\nStudent found. Enter new details: 👇")
 
             while True:
 
@@ -104,7 +131,7 @@ def update_student():
                     new_email_id = input("Enter the new Email ID of the student: ")
                     student['email_id'] = new_email_id
                 else:
-                    print("Invalid choice")
+                    print("Invalid choice...❌")
                     continue
 
                 again_choice = input("\nDo you want to update another detail? (y/n): ").lower()
@@ -113,7 +140,7 @@ def update_student():
                 
             display_student(student)
             return
-    print("\nStudent not found.")
+    print("\nStudent not found...❌")
 
 def delete_student():
     print("\n===================DELETE STUDENT DETAILS===================")
@@ -122,10 +149,10 @@ def delete_student():
     for student in students:
         if student['name'].lower() == student_name.lower():
             students.remove(student)
-            print(f"\nStudent {student_name} has been deleted successfully.")
+            print(f"\nStudent {student_name} has been deleted successfully...☑️")
             return
 
-    print("\nStudent not found.")
+    print("\nStudent not found...❌")
 
 def display_student(student):
     grade = grade_calculate(student["marks"])
@@ -133,13 +160,32 @@ def display_student(student):
     print(f'Name: {student["name"]}')
     print(f'Age: {student["age"]}')
     print(f'Course: {student["course"]}')
-    print(f'Marks: {student["marks"]}')
-    print(f'Grade: {grade}')
+    print("\n-------------- MARKS ----------------")
+
+    for subject, marks in student["marks"].items():
+        print(f"{subject:<20}: {marks}")
+
+    print("--------------------------------------")
+    print(f"Total      : {student['total']} / {len(subjects) * 100}")
+    print(f"Percentage : {student['percentage']:.2f}%")
+    print(f"Grade      : {student['grade']}")
+    
     print(f'Contact No.: {student["contact"]}')
     print(f'Email Id: {student["email_id"]}')
     print("-" * 40)
 
-students = []
+def load_students():
+    try:
+        with open("student.json", "r") as file:
+            return json.load(file)
+
+    except FileNotFoundError:
+        return []
+
+    except json.JSONDecodeError:
+        return []
+
+students = load_students()
 
 while True:
     print("\n======================================================================")
@@ -158,22 +204,28 @@ while True:
     if choice == 1:
         student = add_students()
         students.append(student)
-        print("\nStudent added successfully!")
+        save_students()
+        print("\nStudent added successfully...☑️")
 
     elif choice == 2:
         search_student()
-
+    
     elif choice == 3:
         update_student()
+        save_students()
 
     elif choice == 4:
         delete_student()
+        save_students()
 
     elif choice == 5:
+
         if not students:
-            print("\nNo students found.")
+            print("\nNo students found...❌")
+
         else:
             print("\n================ ALL STUDENTS ================")
+
             for student in students:
                 display_student(student)
 
@@ -182,5 +234,5 @@ while True:
         break
 
     else:
-        print("\nInvalid choice. Please try again.")
+        print("\nInvalid choice. Please try again...❌")
 

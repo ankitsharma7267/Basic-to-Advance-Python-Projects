@@ -1,0 +1,48 @@
+[
+    {
+        "name": "Ankit Sharma",
+        "age": 20,
+        "marks": 92,
+        "course": "B.tech (CSE)",
+        "contact": "6307490551",
+        "email_id": "ankitsharma123@gmail.com"
+    },
+    {
+        "name": "Ritik Sharma",
+        "age": 20,
+        "marks": 95,
+        "course": "Pharmacy",
+        "contact": "7267001045",
+        "email_id": "ritiksharma123@gmail.com"
+    },
+    {
+        "name": "Ankit Sharma",
+        "age": 20,
+        "marks": {
+            "Hindi": 78,
+            "English": 57,
+            "Maths": 68,
+            "Science": 55,
+            "Social Science": 73,
+            "Physical Education": 83
+        },
+        "course": "B.tech",
+        "contact": "6307490551",
+        "email_id": "ankit@gmail.com"
+    },
+    {
+        "name": "ankit",
+        "age": 63,
+        "marks": {
+            "Hindi": 63,
+            "English": 64,
+            "Maths": 74,
+            "Science": 56,
+            "Social Studies": 75,
+            "Physical Education": 75
+        },
+        "course": "dvwug",
+        "contact": "756524634",
+        "email_id": "bvsdvcbsc"
+    }
+]

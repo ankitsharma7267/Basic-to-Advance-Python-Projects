@@ -51,11 +51,15 @@ def add_students():
     email_id = input('Enter the Email ID of student: ')
     total_marks = sum(marks.values())
     percentage = (total_marks / (len(subjects) * 100)) * 100
+    grade = grade_calculate(percentage)
 
     student = {
         'name': name,
         'age': age,
         'marks': marks,
+        "total_marks": total_marks,
+        "percentage": percentage,
+        "grade": grade,
         'course': course,
         'contact': contact,
         'email_id': email_id
@@ -119,8 +123,24 @@ def update_student():
                     student['age'] = get_valid_number("Enter the new age of student: ", 5, 100)
 
                 elif choice == 3:
-                    student['marks'] = get_valid_number("Enter the new marks of the student: ", 0, 100)
+
+                    print("-" * 40)
+
+                    for index, subject_name in enumerate(subjects, start=1):
+                        print(f"{index}. {subject_name}")
+
+                        subject = input("\nEnter the subject you want to update marks for: ")
+
+                    for subject_name in student["marks"]:
+
+                        if subject_name.lower() == subject.lower():
+
+                            print("\nSubject found...☑️")
+
+                            new_marks = get_valid_number(
+                                    "Enter the new marks: ", 0, 100)
                     
+
                 elif choice == 4:
                     new_course = input("Enter the new course of the student: ")
                     student['course'] = new_course

@@ -105,61 +105,88 @@ def search_student():
 
 
 def update_student():
+
     print("\n===================UPDATE STUDENT DETAILS===================")
-    student_name = input("\nEnter the name of student you want to update: ")
+
+    student_name = input(
+        "\nEnter the name of student you want to update: "
+    )
 
     for student in students:
-        if student['name'].lower() == student_name.lower():
+
+        if student["name"].lower() == student_name.lower():
+
             print("\nStudent found. Enter new details: 👇")
 
             while True:
 
-                choice = get_valid_number("Enter your choice: ", 1, 6)
+                print("\n1. Update Name")
+                print("2. Update Age")
+                print("3. Update Subject Marks")
+                print("4. Update Course")
+                print("5. Update Contact")
+                print("6. Update Email")
+
+                choice = get_valid_number("\nEnter your choice: ", 1, 6)
 
                 if choice == 1:
-                    new_name = input("Enter the new name of student: ")
-                    student['name'] = new_name
+                    new_name = input("\nEnter new name: ")
+                    student["name"] = new_name
+                    print("\nName updated successfully...☑️")
+
                 elif choice == 2:
-                    student['age'] = get_valid_number("Enter the new age of student: ", 5, 100)
+                    new_age = get_valid_number("\nEnter new age: ", 0, 150)
+                    student["age"] = new_age
+                    print("\nAge updated successfully...☑️")
 
                 elif choice == 3:
 
-                    print("-" * 40)
+                    # YOUR SUBJECT CODE HERE
 
                     for index, subject_name in enumerate(subjects, start=1):
                         print(f"{index}. {subject_name}")
 
-                        subject = input("\nEnter the subject you want to update marks for: ")
+                    subject_choice = get_valid_number("\nEnter the subject number: ", 1, len(subjects))
 
-                    for subject_name in student["marks"]:
+                    subject_name = subjects[subject_choice - 1]
 
-                        if subject_name.lower() == subject.lower():
+                    new_marks = get_valid_number(f"\nEnter new marks for {subject_name}: ", 0, 100)
 
-                            print("\nSubject found...☑️")
+                    student["marks"][subject_name] = new_marks
 
-                            new_marks = get_valid_number(
-                                    "Enter the new marks: ", 0, 100)
-                    
+                    total_marks = sum(student["marks"].values())
+
+                    percentage = (total_marks /(len(subjects) * 100)) * 100
+
+                    student["total_marks"] = total_marks
+                    student["percentage"] = percentage
+                    student["grade"] = grade_calculate(percentage)
+
+                    print(f"\n{subject_name} marks updated successfully...☑️")
 
                 elif choice == 4:
-                    new_course = input("Enter the new course of the student: ")
-                    student['course'] = new_course
+                    new_course = input("Enter new course: ")
+                    student["course"] = new_course
+                    print("\nCourse updated successfully...☑️")
+
                 elif choice == 5:
-                    new_contact = input("Enter the new contact detail of student: ")
-                    student['contact'] = new_contact
+                    new_contact = input("Enter new contact number: ")
+                    student["contact"] = new_contact
+                    print("\nContact updated successfully...☑️")
+
                 elif choice == 6:
-                    new_email_id = input("Enter the new Email ID of the student: ")
-                    student['email_id'] = new_email_id
-                else:
-                    print("Invalid choice...❌")
-                    continue
+                    new_email = input("Enter new email ID: ")
+                    student["email_id"] = new_email
+                    print("\nEmail ID updated successfully...☑️")
 
                 again_choice = input("\nDo you want to update another detail? (y/n): ").lower()
-                if again_choice != 'y':
+
+                if again_choice != "y":
                     break
-                
+
             display_student(student)
             return
+
     print("\nStudent not found...❌")
 
 def delete_student():
@@ -175,7 +202,6 @@ def delete_student():
     print("\nStudent not found...❌")
 
 def display_student(student):
-    grade = grade_calculate(student["marks"])
 
     print(f'Name: {student["name"]}')
     print(f'Age: {student["age"]}')
@@ -186,7 +212,7 @@ def display_student(student):
         print(f"{subject:<20}: {marks}")
 
     print("--------------------------------------")
-    print(f"Total      : {student['total']} / {len(subjects) * 100}")
+    print(f"Total      : {student['total_marks']} / {len(subjects) * 100}")
     print(f"Percentage : {student['percentage']:.2f}%")
     print(f"Grade      : {student['grade']}")
     
